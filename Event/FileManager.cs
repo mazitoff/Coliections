@@ -9,11 +9,17 @@ namespace Event
     public class FileManager
     {
         public delegate void FileFoundHandler();
-        public event FileFoundHandler FileFound;
+
+        private event FileFoundHandler _fileFound;
+        public event FileFoundHandler FileFound
+        {
+            add { _fileFound += value; }
+            remove { _fileFound -= value; }
+        }
 
         public void Search(bool isFound)
         {
-            if (FileFound != null)
+            if (_fileFound != null)
             {
                 OnFileFound();
             }
@@ -21,9 +27,9 @@ namespace Event
 
         protected virtual void OnFileFound()   // этот метод события можно будет переопределить в наследнике
         {
-            if (FileFound != null)
+            if (_fileFound != null)
             {
-                FileFound();
+                _fileFound();
             }
         }
     }
